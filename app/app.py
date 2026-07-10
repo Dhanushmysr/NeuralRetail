@@ -1,181 +1,146 @@
+import sys
+from pathlib import Path
+
+import pandas as pd
 import streamlit as st
 
-# ----------------------------------
-# Page Configuration
-# ----------------------------------
-st.set_page_config(
-    page_title="NeuralRetail Analytics",
-    page_icon="🛍️",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
+sys.path.append(str(Path(__file__).resolve().parent))
+from utils.theme import load_theme, gradient_banner, section_header, kpi_row, render_sidebar, insight_box
 
 # ----------------------------------
-# Custom CSS
+# Theme + Page Configuration
 # ----------------------------------
-st.markdown("""
-<style>
-
-/* Hide Streamlit default menu */
-#MainMenu {visibility:hidden;}
-footer {visibility:hidden;}
-header {visibility:hidden;}
-
-/* Sidebar */
-[data-testid="stSidebar"]{
-    background-color:#1E3A8A;
-}
-
-[data-testid="stSidebar"] *{
-    color:white;
-}
-
-/* Main background */
-.main{
-    background-color:#F8FAFC;
-}
-
-/* Headings */
-h1{
-    color:#1E3A8A;
-}
-
-h2,h3{
-    color:#2563EB;
-}
-
-/* Metric Cards */
-div[data-testid="metric-container"]{
-    background:white;
-    border:1px solid #E2E8F0;
-    padding:15px;
-    border-radius:12px;
-    box-shadow:0px 2px 8px rgba(0,0,0,0.08);
-}
-
-</style>
-""", unsafe_allow_html=True)
-st.markdown("""
-<style>
-
-div[data-testid="metric-container"]{
-
-background:linear-gradient(135deg,#ffffff,#f3f4f6);
-
-border-radius:15px;
-
-padding:18px;
-
-box-shadow:0px 4px 12px rgba(0,0,0,.12);
-
-border:1px solid #e5e7eb;
-
-}
-
-</style>
-""", unsafe_allow_html=True)
+load_theme("Home", "🛍️")
 
 # ----------------------------------
 # Sidebar
 # ----------------------------------
-st.sidebar.title("🛍️ NeuralRetail")
-
-st.sidebar.success("AI-Powered Retail Analytics")
-
-st.sidebar.markdown("---")
-
-st.sidebar.info("""
-📌 **Dashboard Modules**
-
-🏠 Home
-
-📈 Demand Forecast
-
-👥 Customer Churn
-
-🎯 Customer Segmentation
-
-📄 Business Reports
-""")
-
-st.sidebar.markdown("---")
-
-st.sidebar.caption("Version 1.0")
+render_sidebar(active_page="Home")
 
 # ----------------------------------
-# Main Page
+# Try to load real data for headline numbers (falls back gracefully)
 # ----------------------------------
-st.title("🛍️ NeuralRetail Analytics Dashboard")
-st.info("""
-👋 **Welcome!**
+BASE_DIR = Path(__file__).resolve().parents[1]
+clean_path = BASE_DIR / "data" / "processed" / "clean_data.csv"
 
-NeuralRetail is an AI-powered analytics platform that helps retailers forecast demand,
-predict customer churn, segment customers, and generate business insights for
-better decision-making.
-""")
+total_customers = total_products = None
+total_revenue = None
 
-st.markdown("""
-Welcome to **NeuralRetail**, an AI-powered retail analytics platform that helps
-businesses make data-driven decisions using Machine Learning.
+if clean_path.exists():
+    try:
+        df = pd.read_csv(clean_path)
+        total_customers = df["Customer ID"].nunique()
+        total_products = df["Description"].nunique()
+        total_revenue = df["TotalAmount"].sum()
+    except Exception:
+        pass
 
-### 🚀 Key Features
-
-- 📈 Demand Forecasting using **Prophet**
-- 👥 Customer Churn Prediction using **XGBoost**
-- 🎯 Customer Segmentation using **K-Means**
-- 📄 Interactive Business Reports
-""")
-
-st.markdown("---")
-col1, col2, col3, col4 = st.columns(4)
-
-col1.metric("📦 Modules", "4")
-
-col2.metric("🤖 ML Models", "3")
-
-col3.metric("📅 Forecast", "30 Days")
-
-col4.metric("📊 Status", "Active")
-
-st.markdown("---")
-
-st.subheader("📌 Technologies Used")
-
-c1, c2, c3, c4 = st.columns(4)
-
-c1.success("🐍 Python")
-
-c2.success("⚡ Streamlit")
-
-c3.success("🤖 XGBoost")
-
-c4.success("📊 Prophet & Plotly")
-
-st.markdown("---")
-
-st.caption(
-    "NeuralRetail Analytics Dashboard | Built with ❤️ using Streamlit, XGBoost, Prophet, Plotly & Scikit-learn"
+# ----------------------------------
+# Hero Banner
+# ----------------------------------
+gradient_banner(
+    eyebrow="AI-Powered Retail Analytics",
+    title="🛍️ NeuralRetail Analytics Dashboard",
+    subtitle=(
+        "NeuralRetail helps retailers forecast demand, predict customer churn, "
+        "segment customers, and generate business insights for better, data-driven "
+        "decision-making — powered by Prophet, XGBoost, and K-Means."
+    ),
+    color="blue",
 )
+
+# ----------------------------------
+# Top-line KPIs
+# ----------------------------------
+section_header("📌", "Platform at a Glance")
+
+kpi_items = [
+    {"icon": "📦", "label": "Modules", "value": "5", "color": "blue"},
+    {"icon": "🤖", "label": "ML Models", "value": "3", "color": "purple"},
+    {"icon": "📅", "label": "Forecast Horizon", "value": "30 Days", "color": "teal"},
+    {"icon": "✅", "label": "Status", "value": "Active", "color": "green"},
+]
+kpi_row(kpi_items)
+
+st.write("")
+
+if total_customers is not None:
+    section_header("📊", "Business Snapshot")
+    kpi_row([
+        {"icon": "👥", "label": "Customers", "value": f"{total_customers:,}", "color": "pink"},
+        {"icon": "🛒", "label": "Products", "value": f"{total_products:,}", "color": "orange"},
+        {"icon": "💰", "label": "Total Revenue", "value": f"₹{total_revenue:,.0f}", "color": "green"},
+        {"icon": "📈", "label": "Forecast", "value": "30 Days", "color": "blue"},
+    ])
+    st.write("")
+
 st.markdown("---")
 
-st.subheader("💡 Business Benefits")
+# ----------------------------------
+# Modules
+# ----------------------------------
+section_header("🚀", "Key Features")
 
-col1, col2 = st.columns(2)
+modules = [
+    ("📈", "Demand Forecasting", "Predict future product sales using Prophet time-series forecasting.", "blue"),
+    ("👥", "Customer Churn", "Identify customers likely to leave using an XGBoost classifier.", "purple"),
+    ("🎯", "Customer Segmentation", "Group customers by purchasing behaviour using K-Means clustering.", "teal"),
+    ("💡", "Business Insights", "Executive-level KPIs, trends, and actionable recommendations.", "orange"),
+]
 
-with col1:
-    st.success("""
-✔ Better Inventory Planning
+cols = st.columns(4)
+for col, (icon, title, desc, color) in zip(cols, modules):
+    with col:
+        st.markdown(
+            f"""
+            <div class="nr-card">
+                <div style="font-size:1.6rem;">{icon}</div>
+                <div style="font-weight:700; color:#0F172A; margin:6px 0 4px 0;">{title}</div>
+                <div style="font-size:0.85rem; color:#475569; line-height:1.5;">{desc}</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
-✔ Reduce Customer Churn
+st.write("")
+st.markdown("---")
 
-✔ Improve Customer Satisfaction
-""")
+# ----------------------------------
+# Technology Stack
+# ----------------------------------
+section_header("🛠️", "Technologies Used")
 
-with col2:
-    st.success("""
-✔ AI-Based Sales Forecasting
+tech_cols = st.columns(4)
+techs = [("🐍", "Python"), ("⚡", "Streamlit"), ("🤖", "XGBoost"), ("📊", "Prophet & Plotly")]
+for col, (icon, name) in zip(tech_cols, techs):
+    with col:
+        st.markdown(
+            f"""
+            <div class="nr-card" style="text-align:center;">
+                <div style="font-size:1.5rem;">{icon}</div>
+                <div style="font-weight:600; color:#1E293B; margin-top:4px;">{name}</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
-✔ Targeted Marketing
+st.write("")
+st.markdown("---")
 
-✔ Data-Driven Decision Making
-""")
+# ----------------------------------
+# Business Benefits
+# ----------------------------------
+section_header("💡", "Business Benefits")
+
+left, right = st.columns(2)
+with left:
+    insight_box("📦", "Better inventory planning through demand forecasting.", kind="success")
+    insight_box("🎯", "Reduced customer churn through early risk identification.", kind="success")
+    insight_box("😊", "Improved customer satisfaction via personalized engagement.", kind="success")
+with right:
+    insight_box("🤖", "AI-based sales forecasting powered by Prophet.", kind="info")
+    insight_box("📣", "Targeted marketing based on customer segments.", kind="info")
+    insight_box("📊", "Data-driven decision making across the business.", kind="info")
+
+st.markdown("---")
+st.caption("NeuralRetail Analytics Dashboard | Built with ❤️ using Streamlit, XGBoost, Prophet, Plotly & Scikit-learn")

@@ -1,196 +1,191 @@
+import sys
+from pathlib import Path
+
+import pandas as pd
 import streamlit as st
 
-st.set_page_config(
-    page_title="Home",
-    page_icon="🏠",
-    layout="wide"
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+from utils.theme import load_theme, gradient_banner, section_header, kpi_row, render_sidebar, insight_box, badge_row
+
+# ----------------------------------
+# Theme + Page Configuration
+# ----------------------------------
+load_theme("Home", "🏠")
+render_sidebar(active_page="Home")
+
+# ----------------------------------
+# Try to load real headline numbers
+# ----------------------------------
+BASE_DIR = Path(__file__).resolve().parents[2]
+clean_path = BASE_DIR / "data" / "processed" / "clean_data.csv"
+
+total_customers = total_products = total_revenue = None
+
+if clean_path.exists():
+    try:
+        df = pd.read_csv(clean_path)
+        total_customers = df["Customer ID"].nunique()
+        total_products = df["Description"].nunique()
+        total_revenue = df["TotalAmount"].sum()
+    except Exception:
+        pass
+
+# ----------------------------------
+# Hero
+# ----------------------------------
+gradient_banner(
+    eyebrow="Retail Intelligence Platform",
+    title="🏠 NeuralRetail Analytics Dashboard",
+    subtitle="Predict • Analyze • Optimize • Grow — an AI-powered dashboard that helps businesses "
+              "analyze customer behaviour, forecast sales, predict churn, and segment customers.",
+    color="blue",
 )
 
-st.title("🏠 NeuralRetail Analytics Dashboard")
-st.markdown("""
-<div style='background:linear-gradient(90deg,#2563EB,#1E40AF);
-padding:20px;
-border-radius:15px;
-color:white;
-margin-bottom:20px;'>
+# ----------------------------------
+# Platform KPIs
+# ----------------------------------
+section_header("📌", "Platform Overview")
 
-<h2>AI Powered Retail Analytics Dashboard</h2>
+kpi_row([
+    {"icon": "📦", "label": "Modules", "value": "5", "color": "blue"},
+    {"icon": "🤖", "label": "ML Models", "value": "3", "color": "purple"},
+    {"icon": "📅", "label": "Forecast Horizon", "value": "30 Days", "color": "teal"},
+    {"icon": "✅", "label": "Status", "value": "Active", "color": "green"},
+])
 
-<p>Predict • Analyze • Optimize • Grow</p>
+st.write("")
 
-</div>
-""", unsafe_allow_html=True)
+if total_customers is not None:
+    kpi_row([
+        {"icon": "👥", "label": "Customers", "value": f"{total_customers:,}", "color": "pink"},
+        {"icon": "🛒", "label": "Products", "value": f"{total_products:,}", "color": "orange"},
+        {"icon": "💰", "label": "Revenue", "value": f"₹{total_revenue:,.0f}", "color": "green"},
+        {"icon": "📈", "label": "Forecast", "value": "30 Days", "color": "blue"},
+    ])
 
-st.markdown("""
-Welcome to **NeuralRetail**, an AI-powered Retail Analytics platform.
-
-This dashboard helps businesses analyze customer behavior, forecast future sales,
-predict customer churn, and perform customer segmentation using Machine Learning.
-""")
-
+st.write("")
 st.markdown("---")
 
-# KPI Cards
-col1, col2, col3, col4 = st.columns(4)
-
-col1.metric(
-    "Modules",
-    "4"
-)
-
-col2.metric(
-    "ML Models",
-    "3"
-)
-
-col3.metric(
-    "Forecast Horizon",
-    "30 Days"
-)
-
-col4.metric(
-    "Status",
-    "Active ✅"
-)
-
-st.markdown("---")
-
-st.subheader("📌 Dashboard Modules")
+# ----------------------------------
+# Dashboard Modules
+# ----------------------------------
+section_header("🧭", "Dashboard Modules")
 
 c1, c2 = st.columns(2)
 
 with c1:
-    st.info("""
-### 📈 Demand Forecast
-
-Predict future product sales using Prophet time-series forecasting.
-
-**Benefits**
-- Inventory Planning
-- Demand Prediction
-- Sales Trends
-""")
-
-    st.success("""
-### 👥 Customer Churn
-
-Identify customers who are likely to leave.
-
-**Benefits**
-- Customer Retention
-- Loyalty Programs
-- Marketing Campaigns
-""")
+    st.markdown(
+        """
+        <div class="nr-card" style="margin-bottom:14px;">
+            <div style="font-weight:700; color:#0F172A;">📈 Demand Forecast</div>
+            <p style="font-size:0.88rem; color:#475569; margin:6px 0;">
+                Predict future product sales using Prophet time-series forecasting.
+            </p>
+            <div style="font-size:0.82rem; color:#334155;">
+                <b>Benefits:</b> Inventory Planning · Demand Prediction · Sales Trends
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        """
+        <div class="nr-card">
+            <div style="font-weight:700; color:#0F172A;">👥 Customer Churn</div>
+            <p style="font-size:0.88rem; color:#475569; margin:6px 0;">
+                Identify customers who are likely to leave.
+            </p>
+            <div style="font-size:0.82rem; color:#334155;">
+                <b>Benefits:</b> Customer Retention · Loyalty Programs · Marketing Campaigns
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 with c2:
-    st.warning("""
-### 🎯 Customer Segmentation
+    st.markdown(
+        """
+        <div class="nr-card" style="margin-bottom:14px;">
+            <div style="font-weight:700; color:#0F172A;">🎯 Customer Segmentation</div>
+            <p style="font-size:0.88rem; color:#475569; margin:6px 0;">
+                Group customers based on purchasing behaviour.
+            </p>
+            <div style="font-size:0.82rem; color:#334155;">
+                <b>Benefits:</b> Personalized Marketing · Targeted Promotions · Customer Insights
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        """
+        <div class="nr-card">
+            <div style="font-weight:700; color:#0F172A;">📄 Reports & Insights</div>
+            <p style="font-size:0.88rem; color:#475569; margin:6px 0;">
+                Consolidated business reports and executive insights.
+            </p>
+            <div style="font-size:0.82rem; color:#334155;">
+                <b>Includes:</b> Sales Summary · Customer Insights · Forecast Reports
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
-Group customers based on purchasing behavior.
-
-**Benefits**
-- Personalized Marketing
-- Targeted Promotions
-- Customer Insights
-""")
-
-    st.error("""
-### 📄 Reports
-
-Generate business reports and analytics.
-
-**Includes**
-- Sales Summary
-- Customer Insights
-- Forecast Reports
-""")
-
+st.write("")
 st.markdown("---")
 
-st.subheader("🚀 Technologies Used")
+# ----------------------------------
+# Technologies
+# ----------------------------------
+section_header("🛠️", "Technologies Used")
+badge_row(["Python", "Streamlit", "Plotly", "Prophet", "XGBoost", "K-Means", "Pandas"])
 
-tech1, tech2, tech3, tech4 = st.columns(4)
-
-tech1.success("🐍 Python")
-tech2.success("⚡ Streamlit")
-tech3.success("🤖 XGBoost")
-tech4.success("📊 Plotly + Prophet")
-
-st.markdown("---")
+st.write("")
 st.markdown("---")
 
-st.subheader("📖 About the Project")
+# ----------------------------------
+# About the Project
+# ----------------------------------
+section_header("📖", "About the Project")
 
-st.write("""
-**NeuralRetail Analytics Dashboard** is an AI-powered retail analytics solution
-developed to help businesses make data-driven decisions.
-
-### Objectives
-- Forecast future sales using Prophet
-- Predict customer churn using XGBoost
-- Segment customers using K-Means clustering
-- Generate business insights through interactive dashboards
-
-### Technologies Used
-- Python
-- Streamlit
-- Plotly
-- Prophet
-- XGBoost
-- Scikit-learn
-- Pandas
-""")
-
-st.caption(
-    "NeuralRetail Analytics Dashboard | Built with Streamlit, Prophet, XGBoost, Plotly & Scikit-learn"
+st.markdown(
+    """
+    <div class="nr-card">
+        <p style="font-size:0.92rem; color:#334155; line-height:1.6;">
+            <b>NeuralRetail Analytics Dashboard</b> is an AI-powered retail analytics solution
+            developed to help businesses make data-driven decisions.
+        </p>
+        <b>Objectives</b>
+        <ul style="font-size:0.88rem; color:#475569;">
+            <li>Forecast future sales using Prophet</li>
+            <li>Predict customer churn using XGBoost</li>
+            <li>Segment customers using K-Means clustering</li>
+            <li>Generate business insights through interactive dashboards</li>
+        </ul>
+    </div>
+    """,
+    unsafe_allow_html=True,
 )
-col1, col2, col3, col4 = st.columns(4)
 
-col1.metric("👥 Customers", "5,878")
-col2.metric("📦 Products", "3,681")
-col3.metric("💰 Revenue", "$8.9M")
-col4.metric("📈 Forecast", "30 Days")
-st.subheader("📊 Executive Summary")
+st.write("")
+st.markdown("---")
 
-col1,col2=st.columns(2)
+# ----------------------------------
+# Executive Summary
+# ----------------------------------
+section_header("📊", "Executive Summary")
 
-with col1:
+left, right = st.columns(2)
+with left:
+    insight_box("📈", "Revenue is increasing steadily.", kind="success")
+    insight_box("🎯", "Customer retention is improving.", kind="success")
+    insight_box("📅", "Sales forecast available for the next 30 days.", kind="success")
+with right:
+    insight_box("🤖", "Churn model trained using XGBoost.", kind="info")
+    insight_box("🧩", "Segmentation completed using K-Means.", kind="info")
+    insight_box("✅", "Reports generated successfully.", kind="info")
 
-    st.success("""
-✔ Revenue is increasing steadily.
-
-✔ Customer retention is improving.
-
-✔ Sales forecast available for next 30 days.
-""")
-
-with col2:
-
-    st.info("""
-✔ Churn model trained using XGBoost.
-
-✔ Segmentation completed using KMeans.
-
-✔ Reports generated successfully.
-""")
-st.info("""
-🏠 **Dashboard Overview**
-
-This dashboard integrates Machine Learning models to help retailers forecast demand,
-predict customer churn, segment customers, and generate business reports for
-better decision-making.
-""")
-st.subheader("👨‍💻 Project Information")
-
-st.write("""
-**Project:** NeuralRetail Analytics Dashboard
-
-**Technologies**
-- Python
-- Streamlit
-- Prophet
-- XGBoost
-- K-Means
-- Plotly
-- Pandas
-""")
+st.markdown("---")
+st.caption("NeuralRetail Analytics Dashboard | Built with Streamlit, Prophet, XGBoost, Plotly & Scikit-learn")

@@ -1,106 +1,66 @@
-import streamlit as st
-import pandas as pd
-import plotly.express as px
+import sys
 from pathlib import Path
 
-# -----------------------------
-# Page Configuration
-# -----------------------------
-st.set_page_config(
-    page_title="Customer Churn",
-    page_icon="👥",
-    layout="wide"
+import pandas as pd
+import plotly.express as px
+import streamlit as st
+
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+from utils.theme import (
+    load_theme, gradient_banner, section_header, kpi_row,
+    render_sidebar, insight_box, style_fig, CHART_COLORS,
 )
 
 # -----------------------------
-# Custom CSS
+# Theme + Page Configuration
 # -----------------------------
-st.markdown("""
-<style>
-div[data-testid="metric-container"]{
-    background-color:#EAF4FF;
-    border:1px solid #CBD5E1;
-    padding:15px;
-    border-radius:12px;
-}
+load_theme("Customer Churn", "👥")
+render_sidebar(active_page="Customer Churn")
 
-h1{
-    color:#2563EB;
-}
-</style>
-""", unsafe_allow_html=True)
+gradient_banner(
+    eyebrow="Retention Intelligence",
+    title="👥 Customer Churn Dashboard",
+    subtitle="XGBoost-powered churn probabilities for every customer, so retention teams can "
+              "act on risk before customers leave.",
+    color="purple",
+)
 
 # -----------------------------
-# Title
-# -----------------------------
-st.title("👥 Customer Churn Dashboard")
-st.markdown("""
-<div style='background:linear-gradient(90deg,#2563EB,#1E40AF);
-padding:20px;
-border-radius:15px;
-color:white;
-margin-bottom:20px;'>
-
-<h2>AI Powered Retail Analytics Dashboard</h2>
-
-<p>Predict • Analyze • Optimize • Grow</p>
-
-</div>
-""", unsafe_allow_html=True)
-
-# -----------------------------
-# Load Data
+# Load Data (unchanged logic)
 # -----------------------------
 BASE_DIR = Path(__file__).resolve().parents[2]
-
 churn_file = BASE_DIR / "data" / "features" / "churn_scores.csv"
 
 if churn_file.exists():
 
     df = pd.read_csv(churn_file)
 
-    st.success("Churn scores loaded successfully!")
+    st.success("✅ Churn scores loaded successfully!")
 
     # -----------------------------
     # KPI Cards
     # -----------------------------
-    col1, col2, col3 = st.columns(3)
-
-    col1.metric(
-        "Total Customers",
-        len(df)
-    )
-
-    col2.metric(
-        "Average Churn Probability",
-        f"{df['ChurnProbability'].mean():.2%}"
-    )
+    section_header("📌", "Churn KPIs")
 
     high_risk = len(df[df["ChurnProbability"] > 0.7])
 
-    col3.metric(
-        "High-Risk Customers",
-        high_risk
-    )
+    kpi_row([
+        {"icon": "👥", "label": "Total Customers", "value": f"{len(df):,}", "color": "blue"},
+        {"icon": "📉", "label": "Avg Churn Probability", "value": f"{df['ChurnProbability'].mean():.1%}", "color": "orange"},
+        {"icon": "⚠️", "label": "High-Risk Customers", "value": f"{high_risk:,}", "color": "red"},
+    ])
 
+    st.write("")
     st.markdown("---")
 
     # -----------------------------
     # Customer Data
     # -----------------------------
-    st.subheader("📋 Customer Churn Data")
+    section_header("📋", "Customer Churn Data")
 
     st.dataframe(
-        df[
-            [
-                "Recency",
-                "Frequency",
-                "Monetary",
-                "Churn",
-                "ChurnProbability"
-            ]
-        ],
-        use_container_width=True
+        df[["Recency", "Frequency", "Monetary", "Churn", "ChurnProbability"]],
+        use_container_width=True,
     )
 
     st.markdown("---")
@@ -108,75 +68,66 @@ if churn_file.exists():
     # -----------------------------
     # Charts
     # -----------------------------
+    section_header("📊", "Churn Analysis")
+
     left, right = st.columns(2)
 
     with left:
-
         fig = px.pie(
             df,
             names="Churn",
-            title="Churn Distribution"
+            title="Churn Distribution",
+            color_discrete_sequence=CHART_COLORS,
+            hole=0.45,
         )
-
-        st.plotly_chart(fig, use_container_width=True)
+        fig.update_traces(
+            textinfo="percent+label",
+            hovertemplate="%{label}: %{value} customers (%{percent})<extra></extra>",
+        )
+        st.plotly_chart(style_fig(fig, height=380), use_container_width=True)
 
     with right:
-
         fig2 = px.histogram(
             df,
             x="ChurnProbability",
             nbins=20,
-            title="Churn Probability Distribution"
+            title="Churn Probability Distribution",
+            labels={"ChurnProbability": "Churn Probability"},
+            color_discrete_sequence=[CHART_COLORS[3]],
         )
-
-        st.plotly_chart(fig2, use_container_width=True)
+        fig2.update_traces(hovertemplate="Probability: %{x:.2f}<br>Customers: %{y}<extra></extra>")
+        st.plotly_chart(style_fig(fig2, height=380), use_container_width=True)
 
     # -----------------------------
     # High Risk Customers
     # -----------------------------
     st.markdown("---")
+    section_header("⚠️", "High-Risk Customers")
 
-    st.subheader("⚠ High-Risk Customers")
-
-    st.warning(f"""
-There are **{high_risk}** customers with a churn probability greater than **70%**.
-
-Recommended actions:
-
-- Offer personalized discounts
-- Send loyalty rewards
-- Launch targeted email campaigns
-- Follow up with customer support
-""")
+    insight_box(
+        "⚠️",
+        f"There are <b>{high_risk}</b> customers with a churn probability greater than <b>70%</b>.",
+        kind="warning",
+    )
+    insight_box("🎁", "Offer personalized discounts to at-risk customers.", kind="info")
+    insight_box("💎", "Send loyalty rewards to strengthen retention.", kind="info")
+    insight_box("📧", "Launch targeted email campaigns for high-risk segments.", kind="info")
+    insight_box("☎️", "Follow up proactively through customer support.", kind="info")
 
     # -----------------------------
     # Download Button
     # -----------------------------
+    st.write("")
     with open(churn_file, "rb") as file:
-
         st.download_button(
             label="⬇ Download Churn Scores",
             data=file,
             file_name="churn_scores.csv",
-            mime="text/csv"
+            mime="text/csv",
         )
 
-    # -----------------------------
-    # Footer
-    # -----------------------------
     st.markdown("---")
-
-    st.caption(
-        "NeuralRetail Analytics Dashboard | Built with Streamlit • XGBoost • Plotly"
-    )
+    st.caption("NeuralRetail Analytics Dashboard | Built with Streamlit • XGBoost • Plotly")
 
 else:
-
     st.error("❌ churn_scores.csv not found. Please run churn_model.py first.")
-st.info("""
-👥 **Business Insight**
-
-Customer churn prediction helps identify customers who are likely to leave,
-allowing businesses to take proactive retention measures through personalized
-offers and loyalty programs.
-""")

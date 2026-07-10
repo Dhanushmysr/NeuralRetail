@@ -1,38 +1,28 @@
-import streamlit as st
-import pandas as pd
+import sys
 from pathlib import Path
 
+import pandas as pd
+import streamlit as st
+
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+from utils.theme import load_theme, gradient_banner, section_header, kpi_row, render_sidebar, insight_box
+
 # -----------------------------------
-# Page Configuration
+# Theme + Page Configuration
 # -----------------------------------
-st.set_page_config(
-    page_title="Reports",
-    page_icon="📄",
-    layout="wide"
+load_theme("Reports", "📄")
+render_sidebar(active_page="Reports")
+
+gradient_banner(
+    eyebrow="Consolidated Reporting",
+    title="📄 Business Reports Dashboard",
+    subtitle="A single view of forecasting, churn prediction, and segmentation outputs, "
+              "ready to preview and download.",
+    color="indigo",
 )
 
 # -----------------------------------
-# Custom CSS
-# -----------------------------------
-st.markdown("""
-<style>
-div[data-testid="metric-container"]{
-    background-color:#EAF4FF;
-    border:1px solid #CBD5E1;
-    padding:15px;
-    border-radius:12px;
-}
-
-h1{
-    color:#2563EB;
-}
-</style>
-""", unsafe_allow_html=True)
-
-st.title("📄 Business Reports Dashboard")
-
-# -----------------------------------
-# File Paths
+# File Paths (unchanged logic)
 # -----------------------------------
 BASE_DIR = Path(__file__).resolve().parents[2]
 
@@ -40,9 +30,6 @@ forecast_file = BASE_DIR / "data" / "features" / "forecast.csv"
 churn_file = BASE_DIR / "data" / "features" / "churn_scores.csv"
 segment_file = BASE_DIR / "data" / "features" / "segments.csv"
 
-# -----------------------------------
-# File Status
-# -----------------------------------
 forecast_exists = forecast_file.exists()
 churn_exists = churn_file.exists()
 segment_exists = segment_file.exists()
@@ -50,40 +37,34 @@ segment_exists = segment_file.exists()
 # -----------------------------------
 # KPI Cards
 # -----------------------------------
-col1, col2, col3 = st.columns(3)
+section_header("📌", "Report Availability")
 
-col1.metric(
-    "Forecast Report",
-    "Available" if forecast_exists else "Missing"
-)
+kpi_row([
+    {"icon": "📈", "label": "Forecast Report", "value": "Available" if forecast_exists else "Missing", "color": "blue" if forecast_exists else "red"},
+    {"icon": "👥", "label": "Churn Report", "value": "Available" if churn_exists else "Missing", "color": "purple" if churn_exists else "red"},
+    {"icon": "🎯", "label": "Segmentation Report", "value": "Available" if segment_exists else "Missing", "color": "teal" if segment_exists else "red"},
+])
 
-col2.metric(
-    "Churn Report",
-    "Available" if churn_exists else "Missing"
-)
-
-col3.metric(
-    "Segmentation Report",
-    "Available" if segment_exists else "Missing"
-)
-
+st.write("")
 st.markdown("---")
 
 # -----------------------------------
 # Preview Reports
 # -----------------------------------
 if forecast_exists:
-    st.subheader("📈 Forecast Report")
+    section_header("📈", "Forecast Report")
     forecast = pd.read_csv(forecast_file)
     st.dataframe(forecast.head(), use_container_width=True)
+    st.write("")
 
 if churn_exists:
-    st.subheader("👥 Churn Report")
+    section_header("👥", "Churn Report")
     churn = pd.read_csv(churn_file)
     st.dataframe(churn.head(), use_container_width=True)
+    st.write("")
 
 if segment_exists:
-    st.subheader("🎯 Segmentation Report")
+    section_header("🎯", "Segmentation Report")
     segment = pd.read_csv(segment_file)
     st.dataframe(segment.head(), use_container_width=True)
 
@@ -92,73 +73,46 @@ st.markdown("---")
 # -----------------------------------
 # Business Summary
 # -----------------------------------
-st.subheader("💡 Business Summary")
-
-summary = []
+section_header("💡", "Business Summary")
 
 if forecast_exists:
-    summary.append("✅ Demand forecast generated successfully.")
-
+    insight_box("✅", "Demand forecast generated successfully.", kind="success")
 if churn_exists:
-    summary.append("✅ Customer churn probabilities calculated.")
-
+    insight_box("✅", "Customer churn probabilities calculated.", kind="success")
 if segment_exists:
-    summary.append("✅ Customer segmentation completed.")
+    insight_box("✅", "Customer segmentation completed.", kind="success")
 
-for item in summary:
-    st.success(item)
-
-st.info("""
-The dashboard combines machine learning models to help retail businesses:
-
-- Predict future demand
-- Identify customers at risk of churning
-- Segment customers for personalized marketing
-- Support better business decisions
-""")
+insight_box(
+    "📊",
+    "The dashboard combines machine learning models to help retail businesses predict future "
+    "demand, identify customers at risk of churning, segment customers for personalized "
+    "marketing, and support better business decisions.",
+    kind="info",
+)
 
 st.markdown("---")
 
 # -----------------------------------
 # Downloads
 # -----------------------------------
-st.subheader("⬇ Download Reports")
+section_header("⬇️", "Download Reports")
+
+dl1, dl2, dl3 = st.columns(3)
 
 if forecast_exists:
-    with open(forecast_file, "rb") as f:
-        st.download_button(
-            "Download Forecast Report",
-            f,
-            file_name="forecast.csv",
-            mime="text/csv"
-        )
+    with dl1:
+        with open(forecast_file, "rb") as f:
+            st.download_button("📈 Forecast Report", f, file_name="forecast.csv", mime="text/csv")
 
 if churn_exists:
-    with open(churn_file, "rb") as f:
-        st.download_button(
-            "Download Churn Report",
-            f,
-            file_name="churn_scores.csv",
-            mime="text/csv"
-        )
+    with dl2:
+        with open(churn_file, "rb") as f:
+            st.download_button("👥 Churn Report", f, file_name="churn_scores.csv", mime="text/csv")
 
 if segment_exists:
-    with open(segment_file, "rb") as f:
-        st.download_button(
-            "Download Segmentation Report",
-            f,
-            file_name="segments.csv",
-            mime="text/csv"
-        )
+    with dl3:
+        with open(segment_file, "rb") as f:
+            st.download_button("🎯 Segmentation Report", f, file_name="segments.csv", mime="text/csv")
 
 st.markdown("---")
-
-st.caption(
-    "NeuralRetail Analytics Dashboard | Reports Module | Streamlit • XGBoost • Prophet • K-Means"
-)
-st.info("""
-📄 **Business Insight**
-
-The reports module provides a consolidated view of forecasting, churn prediction,
-and customer segmentation results, enabling data-driven business decisions.
-""")
+st.caption("NeuralRetail Analytics Dashboard | Reports Module | Streamlit • XGBoost • Prophet • K-Means")
