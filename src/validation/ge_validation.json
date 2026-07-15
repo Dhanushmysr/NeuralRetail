@@ -1,0 +1,68 @@
+{
+  "total": 15,
+  "passed": 15,
+  "failed": 0,
+  "success_rate": 100.0,
+  "checks": [
+    {
+      "check": "Column Invoice exists",
+      "status": "PASSED"
+    },
+    {
+      "check": "Column Customer ID exists",
+      "status": "PASSED"
+    },
+    {
+      "check": "Column Price exists",
+      "status": "PASSED"
+    },
+    {
+      "check": "Column Quantity exists",
+      "status": "PASSED"
+    },
+    {
+      "check": "Column InvoiceDate exists",
+      "status": "PASSED"
+    },
+    {
+      "check": "Column StockCode exists",
+      "status": "PASSED"
+    },
+    {
+      "check": "Column Country exists",
+      "status": "PASSED"
+    },
+    {
+      "check": "Invoice has no nulls",
+      "status": "PASSED"
+    },
+    {
+      "check": "InvoiceDate has no nulls",
+      "status": "PASSED"
+    },
+    {
+      "check": "Price has no nulls",
+      "status": "PASSED"
+    },
+    {
+      "check": "Quantity has no nulls",
+      "status": "PASSED"
+    },
+    {
+      "check": "Price >= 0 for most rows",
+      "status": "PASSED"
+    },
+    {
+      "check": "Quantity range is valid",
+      "status": "PASSED"
+    },
+    {
+      "check": "Dataset has more than 1000 rows",
+      "status": "PASSED"
+    },
+    {
+      "check": "Duplicates under 5%",
+      "status": "PASSED"
+    }
+  ]
+}
