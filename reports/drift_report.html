@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>NeuralRetail - Data Drift Monitoring Report</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family:Segoe UI,Arial,sans-serif;
+    background:#f4f6f9;
+    color:#333;
+}
+
+.header{
+    background:#f57c00;
+    color:white;
+    padding:35px;
+    text-align:center;
+    box-shadow:0 3px 10px rgba(0,0,0,0.25);
+}
+
+.container{
+    width:90%;
+    margin:auto;
+    padding:20px;
+}
+
+.card{
+    background:white;
+    padding:25px;
+    margin:25px 0;
+    border-radius:12px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.15);
+}
+
+h2{
+    color:#f57c00;
+    border-left:6px solid #f57c00;
+    padding-left:12px;
+}
+
+p{
+    text-align:justify;
+    line-height:1.7;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+th{
+    background:#f57c00;
+    color:white;
+    padding:12px;
+}
+
+td{
+    padding:12px;
+    border:1px solid #ddd;
+}
+
+ul{
+    line-height:1.8;
+}
+
+.footer{
+    background:#222;
+    color:white;
+    text-align:center;
+    padding:18px;
+    margin-top:40px;
+}
+
+.highlight{
+    background:#fff3e0;
+    padding:15px;
+    border-left:5px solid #f57c00;
+    border-radius:8px;
+    margin-top:15px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<h1>NeuralRetail</h1>
+
+<h2>Data Drift Monitoring Report</h2>
+
+<p>Ensuring Long-Term Reliability of Customer Churn Prediction Models</p>
+
+</div>
+
+<div class="container">
+
+<div class="card">
+
+<h2>Objective</h2>
+
+<p>
+
+The objective of this report is to explain the concept of data drift, its impact on machine learning models, and the monitoring strategy recommended for the NeuralRetail Customer Churn Prediction system. Continuous monitoring ensures that the deployed model remains accurate, reliable, and capable of making trustworthy predictions as customer behaviour evolves over time.
+
+</p>
+
+</div>
+
+<div class="card">
+
+<h2>What is Data Drift?</h2>
+
+<p>
+
+Data Drift occurs when the statistical properties of incoming data differ from the data used to train the machine learning model. As customer behaviour changes over time, the model may begin receiving unfamiliar patterns, reducing its prediction accuracy.
+
+</p>
+
+<div class="highlight">
+
+<b>Example:</b><br><br>
+
+Training Data:
+<ul>
+<li>Average Recency = 8 days</li>
+<li>Purchase Frequency = High</li>
+</ul>
+
+Production Data:
+<ul>
+<li>Average Recency = 45 days</li>
+<li>Purchase Frequency = Low</li>
+</ul>
+
+Such changes indicate that the model is now observing customer behaviour different from the original training dataset.
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>Types of Drift</h2>
+
+<table>
+
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+
+<tr>
+<td>Data Drift</td>
+<td>Distribution of input features changes over time.</td>
+</tr>
+
+<tr>
+<td>Concept Drift</td>
+<td>The relationship between customer features and churn changes.</td>
+</tr>
+
+<tr>
+<td>Prediction Drift</td>
+<td>The model begins producing significantly different prediction probabilities.</td>
+</tr>
+
+</table>
+
+</div>
+
+<div class="card">
+
+<h2>Training Dataset Summary</h2>
+
+<table>
+
+<tr>
+<th>Property</th>
+<th>Details</th>
+</tr>
+
+<tr>
+<td>Dataset</td>
+<td>Customer Features Dataset</td>
+</tr>
+
+<tr>
+<td>Target Variable</td>
+<td>Churn</td>
+</tr>
+
+<tr>
+<td>Machine Learning Algorithm</td>
+<td>Logistic Regression (Hyperparameter Tuned)</td>
+</tr>
+
+<tr>
+<td>Total Features</td>
+<td>12 Engineered Customer Features</td>
+</tr>
+
+<tr>
+<td>Task</td>
+<td>Binary Classification</td>
+</tr>
+
+</table>
+
+</div>
+
+<div class="card">
+
+<h2>Critical Features to Monitor</h2>
+
+<table>
+
+<tr>
+<th>Feature</th>
+<th>Reason for Monitoring</th>
+</tr>
+
+<tr>
+<td>Recency</td>
+<td>Most influential predictor of customer churn.</td>
+</tr>
+
+<tr>
+<td>RFM Score</td>
+<td>Represents overall customer engagement.</td>
+</tr>
+
+<tr>
+<td>Purchase Frequency</td>
+<td>Measures customer buying behaviour.</td>
+</tr>
+
+<tr>
+<td>Customer Lifetime Value (CLV)</td>
+<td>Represents long-term customer value.</td>
+</tr>
+
+<tr>
+<td>Total Revenue</td>
+<td>Indicates purchasing trends.</td>
+</tr>
+
+</table>
+
+</div>
+
+<div class="card">
+
+<h2>Potential Drift Indicators</h2>
+
+<ul>
+
+<li>Average Recency increases significantly.</li>
+
+<li>Purchase Frequency decreases.</li>
+
+<li>Customer Lifetime Value declines.</li>
+
+<li>Revenue distribution changes.</li>
+
+<li>Large increase in predicted churn rate.</li>
+
+<li>Drop in model accuracy during evaluation.</li>
+
+</ul>
+
+</div>
+
+<div class="card">
+
+<h2>Business Impact of Drift</h2>
+
+<p>
+
+If data drift is ignored, the model may produce inaccurate churn predictions. This can lead to poor customer retention strategies, ineffective marketing campaigns, incorrect identification of high-risk customers, and ultimately reduced business revenue.
+
+</p>
+
+<table>
+
+<tr>
+<th>Impact</th>
+<th>Business Consequence</th>
+</tr>
+
+<tr>
+<td>Incorrect Predictions</td>
+<td>Wrong customers targeted for retention.</td>
+</tr>
+
+<tr>
+<td>Reduced Accuracy</td>
+<td>Lower confidence in AI recommendations.</td>
+</tr>
+
+<tr>
+<td>Revenue Loss</td>
+<td>Increased customer churn.</td>
+</tr>
+
+<tr>
+<td>Marketing Inefficiency</td>
+<td>Higher campaign costs.</td>
+</tr>
+
+</table>
+
+</div>
+
+<div class="card">
+
+<h2>Recommended Monitoring Strategy</h2>
+
+<table>
+
+<tr>
+<th>Frequency</th>
+<th>Activity</th>
+</tr>
+
+<tr>
+<td>Weekly</td>
+<td>Check missing values and schema validation.</td>
+</tr>
+
+<tr>
+<td>Monthly</td>
+<td>Compare feature distributions with training data.</td>
+</tr>
+
+<tr>
+<td>Quarterly</td>
+<td>Evaluate model performance metrics and retrain if required.</td>
+</tr>
+
+<tr>
+<td>After Deployment</td>
+<td>Monitor prediction probabilities and customer behaviour trends.</td>
+</tr>
+
+</table>
+
+</div>
+
+<div class="card">
+
+<h2>Retraining Strategy</h2>
+
+<p>
+
+To maintain high prediction performance, the NeuralRetail churn prediction model should be retrained whenever significant drift is detected or when business performance metrics begin to decline.
+
+</p>
+
+<ul>
+
+<li>Retrain every 3–6 months.</li>
+
+<li>Retrain after significant customer behaviour changes.</li>
+
+<li>Validate new data before retraining.</li>
+
+<li>Compare the updated model with the previous production model.</li>
+
+</ul>
+
+</div>
+
+<div class="card">
+
+<h2>Recommendations</h2>
+
+<ul>
+
+<li>Continuously monitor customer purchasing behaviour.</li>
+
+<li>Track Recency, Purchase Frequency, and RFM Score regularly.</li>
+
+<li>Generate monthly drift reports.</li>
+
+<li>Validate incoming production data before prediction.</li>
+
+<li>Implement automated alerts when feature distributions change significantly.</li>
+
+<li>Retrain the model periodically to maintain prediction quality.</li>
+
+</ul>
+
+</div>
+
+<div class="card">
+
+<h2>Conclusion</h2>
+
+<p>
+
+Although the NeuralRetail Customer Churn Prediction model currently performs well on the available dataset, customer behaviour naturally evolves over time. Implementing an effective data drift monitoring strategy ensures that the model continues to deliver reliable predictions, supports better business decisions, and maintains long-term operational value.
+
+</p>
+
+</div>
+
+</div>
+
+<div class="footer">
+
+NeuralRetail • Data Drift Monitoring Report • 2026
+
+</div>
+
+</body>
+
+</html>

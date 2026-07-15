@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>NeuralRetail - Business Recommendations Report</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family:Segoe UI,Arial,sans-serif;
+    background:#f4f6f9;
+    color:#333;
+}
+
+.header{
+    background:#f57c00;
+    color:white;
+    padding:35px;
+    text-align:center;
+    box-shadow:0 3px 10px rgba(0,0,0,.25);
+}
+
+.container{
+    width:90%;
+    margin:auto;
+    padding:20px;
+}
+
+.card{
+    background:white;
+    margin:25px 0;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 4px 10px rgba(0,0,0,.15);
+}
+
+h2{
+    color:#f57c00;
+    border-left:6px solid #f57c00;
+    padding-left:12px;
+}
+
+p{
+    text-align:justify;
+    line-height:1.7;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+th{
+    background:#f57c00;
+    color:white;
+    padding:12px;
+}
+
+td{
+    padding:12px;
+    border:1px solid #ddd;
+}
+
+ul{
+    line-height:1.9;
+}
+
+.highlight{
+    background:#fff3e0;
+    border-left:5px solid #f57c00;
+    padding:18px;
+    border-radius:8px;
+    margin-top:15px;
+}
+
+.footer{
+    background:#222;
+    color:white;
+    text-align:center;
+    padding:18px;
+    margin-top:40px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<h1>NeuralRetail</h1>
+
+<h2>Business Recommendations Report</h2>
+
+<p>Actionable Insights for Customer Retention and Business Growth</p>
+
+</div>
+
+<div class="container">
+
+<div class="card">
+
+<h2>Executive Summary</h2>
+
+<p>
+
+This report summarizes the key business recommendations derived from Exploratory Data Analysis (EDA), Feature Engineering, Customer Churn Prediction, Hyperparameter Tuning, and SHAP Explainability. These recommendations aim to improve customer retention, increase revenue, strengthen customer relationships, and support data-driven decision making.
+
+</p>
+
+</div>
+
+<div class="card">
+
+<h2>Project Findings</h2>
+
+<ul>
+
+<li>Customer Recency is the strongest indicator of customer churn.</li>
+
+<li>Customers with low Purchase Frequency are more likely to leave.</li>
+
+<li>High RFM Score customers contribute significantly to business revenue.</li>
+
+<li>Customer Lifetime Value (CLV) helps identify valuable customers.</li>
+
+<li>Machine Learning successfully predicts customers at risk of churning.</li>
+
+<li>SHAP analysis provides transparent explanations for every prediction.</li>
+
+</ul>
+
+</div>
+
+<div class="card">
+
+<h2>Recommendation 1 - Strengthen Customer Retention</h2>
+
+<p>
+
+Customers with high Recency values have not purchased for a long time and are more likely to churn. These customers should be identified early and targeted with retention campaigns.
+
+</p>
+
+<div class="highlight">
+
+<b>Suggested Actions</b>
+
+<ul>
+
+<li>Personalized email campaigns</li>
+
+<li>Discount coupons</li>
+
+<li>Loyalty rewards</li>
+
+<li>Re-engagement notifications</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>Recommendation 2 - Reward High Value Customers</h2>
+
+<p>
+
+Customers with high Customer Lifetime Value (CLV) and high RFM Scores generate significant revenue and should receive exclusive benefits to improve long-term loyalty.
+
+</p>
+
+<ul>
+
+<li>VIP Membership Programs</li>
+
+<li>Exclusive Discounts</li>
+
+<li>Early Product Access</li>
+
+<li>Premium Customer Support</li>
+
+</ul>
+
+</div>
+
+<div class="card">
+
+<h2>Recommendation 3 - Improve Marketing Strategy</h2>
+
+<p>
+
+Instead of targeting every customer equally, marketing campaigns should focus on customers predicted to churn by the machine learning model.
+
+</p>
+
+<table>
+
+<tr>
+<th>Customer Group</th>
+<th>Recommended Strategy</th>
+</tr>
+
+<tr>
+<td>High Churn Risk</td>
+<td>Retention Campaigns</td>
+</tr>
+
+<tr>
+<td>Medium Churn Risk</td>
+<td>Personalized Offers</td>
+</tr>
+
+<tr>
+<td>Low Churn Risk</td>
+<td>Loyalty Programs</td>
+</tr>
+
+</table>
+
+</div>
+
+<div class="card">
+
+<h2>Recommendation 4 - Monitor Customer Behaviour</h2>
+
+<p>
+
+Customer purchasing behaviour changes over time. Regular monitoring of Recency, Purchase Frequency, and Customer Lifetime Value enables businesses to detect changing customer trends before significant churn occurs.
+
+</p>
+
+</div>
+
+<div class="card">
+
+<h2>Recommendation 5 - Monitor Model Performance</h2>
+
+<p>
+
+The churn prediction model should be continuously monitored after deployment to ensure that prediction accuracy remains stable. Data drift detection and periodic retraining are recommended.
+
+</p>
+
+<ul>
+
+<li>Monthly performance evaluation</li>
+
+<li>Quarterly model retraining</li>
+
+<li>Data drift monitoring</li>
+
+<li>Feature distribution comparison</li>
+
+</ul>
+
+</div>
+
+<div class="card">
+
+<h2>Expected Business Benefits</h2>
+
+<table>
+
+<tr>
+<th>Business Area</th>
+<th>Expected Benefit</th>
+</tr>
+
+<tr>
+<td>Customer Retention</td>
+<td>Reduced customer churn</td>
+</tr>
+
+<tr>
+<td>Marketing</td>
+<td>Better campaign effectiveness</td>
+</tr>
+
+<tr>
+<td>Revenue</td>
+<td>Higher customer lifetime value</td>
+</tr>
+
+<tr>
+<td>Decision Making</td>
+<td>Data-driven business strategies</td>
+</tr>
+
+<tr>
+<td>Customer Experience</td>
+<td>Improved customer satisfaction</td>
+</tr>
+
+</table>
+
+</div>
+
+<div class="card">
+
+<h2>Future Business Opportunities</h2>
+
+<ul>
+
+<li>Deploy the churn prediction model using Streamlit.</li>
+
+<li>Provide real-time predictions using FastAPI.</li>
+
+<li>Integrate dashboards for management reporting.</li>
+
+<li>Implement automated customer segmentation.</li>
+
+<li>Monitor data drift continuously.</li>
+
+<li>Retrain models automatically using new customer data.</li>
+
+<li>Expand predictive analytics to demand forecasting and recommendation systems.</li>
+
+</ul>
+
+</div>
+
+<div class="card">
+
+<h2>Conclusion</h2>
+
+<p>
+
+The NeuralRetail project demonstrates how data analytics and machine learning can transform retail decision-making. By leveraging customer behaviour analysis, predictive modeling, and Explainable AI, businesses can proactively identify at-risk customers, improve customer retention, optimize marketing strategies, and increase long-term profitability. Implementing these recommendations will help organizations make informed, data-driven decisions while maintaining transparency and trust in AI-powered solutions.
+
+</p>
+
+</div>
+
+</div>
+
+<div class="footer">
+
+NeuralRetail • Business Recommendations Report • 2026
+
+</div>
+
+</body>
+
+</html>
