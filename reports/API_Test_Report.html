@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>NeuralRetail API Test Report</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f5f7fa;
+margin:40px;
+}
+
+h1{
+color:#003366;
+}
+
+table{
+
+border-collapse:collapse;
+width:100%;
+margin-top:20px;
+
+}
+
+th{
+
+background:#003366;
+color:white;
+padding:10px;
+
+}
+
+td{
+
+padding:10px;
+border:1px solid #ddd;
+text-align:center;
+
+}
+
+.pass{
+
+color:green;
+font-weight:bold;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>NeuralRetail API Testing Report</h1>
+
+<p><b>Project:</b> NeuralRetail</p>
+<p><b>Module:</b> Customer Churn Prediction API</p>
+<p><b>Tested By:</b> Sravanthi</p>
+
+<table>
+
+<tr>
+
+<th>Endpoint</th>
+
+<th>Method</th>
+
+<th>Status Code</th>
+
+<th>Result</th>
+
+</tr>
+
+<tr>
+
+<td>/</td>
+
+<td>GET</td>
+
+<td>200</td>
+
+<td class="pass">PASS</td>
+
+</tr>
+
+<tr>
+
+<td>/customers</td>
+
+<td>GET</td>
+
+<td>200</td>
+
+<td class="pass">PASS</td>
+
+</tr>
+
+<tr>
+
+<td>/revenue</td>
+
+<td>GET</td>
+
+<td>200</td>
+
+<td class="pass">PASS</td>
+
+</tr>
+
+<tr>
+
+<td>/orders</td>
+
+<td>GET</td>
+
+<td>200</td>
+
+<td class="pass">PASS</td>
+
+</tr>
+
+<tr>
+
+<td>/top-country</td>
+
+<td>GET</td>
+
+<td>200</td>
+
+<td class="pass">PASS</td>
+
+</tr>
+
+<tr>
+
+<td>/top-product</td>
+
+<td>GET</td>
+
+<td>200</td>
+
+<td class="pass">PASS</td>
+
+</tr>
+
+<tr>
+
+<td>/monthly-sales</td>
+
+<td>GET</td>
+
+<td>200</td>
+
+<td class="pass">PASS</td>
+
+</tr>
+
+<tr>
+
+<td>/health</td>
+
+<td>GET</td>
+
+<td>200</td>
+
+<td class="pass">PASS</td>
+
+</tr>
+
+<tr>
+
+<td>/predict-churn</td>
+
+<td>POST</td>
+
+<td>200</td>
+
+<td class="pass">PASS</td>
+
+</tr>
+
+<tr>
+
+<td>/predict-churn (Invalid Request)</td>
+
+<td>POST</td>
+
+<td>422</td>
+
+<td class="pass">PASS (Validation Successful)</td>
+
+</tr>
+
+</table>
+
+<h2>Conclusion</h2>
+
+<p>
+All API endpoints responded correctly.
+Prediction API generated valid responses.
+FastAPI validation successfully rejected invalid requests.
+Overall API functionality is stable.
+</p>
+
+</body>
+
+</html>

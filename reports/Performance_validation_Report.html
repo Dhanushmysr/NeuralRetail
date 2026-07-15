@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Performance Validation</title>
+
+<style>
+
+body{
+
+font-family:Arial;
+
+margin:40px;
+
+}
+
+table{
+
+border-collapse:collapse;
+
+width:100%;
+
+}
+
+th{
+
+background:#4CAF50;
+
+color:white;
+
+padding:10px;
+
+}
+
+td{
+
+padding:10px;
+
+border:1px solid #ccc;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Performance Validation Report</h1>
+
+<table>
+
+<tr>
+
+<th>Endpoint</th>
+
+<th>Response Time (ms)</th>
+
+</tr>
+
+<tr><td>/</td><td>0.00</td></tr>
+<tr><td>/customers</td><td>39.44</td></tr>
+<tr><td>/revenue</td><td>8.28</td></tr>
+<tr><td>/orders</td><td>33.40</td></tr>
+<tr><td>/top-country</td><td>166.54</td></tr>
+<tr><td>/top-product</td><td>296.77</td></tr>
+<tr><td>/monthly-sales</td><td>149.94</td></tr>
+<tr><td>/health</td><td>12.00</td></tr>
+<tr><td>/predict-churn</td><td>8.77</td></tr>
+
+</table>
+
+<h2>Observation</h2>
+
+<ul>
+
+<li>Prediction endpoint responded in under 10 ms.</li>
+
+<li>All endpoints returned HTTP 200 except validation test (HTTP 422).</li>
+
+<li>No server crashes or timeout errors occurred.</li>
+
+<li>Overall API performance is satisfactory for local deployment.</li>
+
+</ul>
+
+</body>
+
+</html>

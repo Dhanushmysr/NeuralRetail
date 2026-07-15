@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>Bug Report</title>
+
+<style>
+
+body{
+
+font-family:Arial;
+
+margin:40px;
+
+}
+
+table{
+
+width:100%;
+
+border-collapse:collapse;
+
+}
+
+th{
+
+background:#d32f2f;
+
+color:white;
+
+padding:10px;
+
+}
+
+td{
+
+border:1px solid #ccc;
+
+padding:10px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Bug Fix Report</h1>
+
+<table>
+
+<tr>
+
+<th>Issue</th>
+
+<th>Resolution</th>
+
+</tr>
+
+<tr>
+
+<td>Model loading error</td>
+
+<td>Verified model path and successfully loaded model using Joblib.</td>
+
+</tr>
+
+<tr>
+
+<td>Dataset path error</td>
+
+<td>Updated dataset path to correct location.</td>
+
+</tr>
+
+<tr>
+
+<td>Prediction endpoint missing</td>
+
+<td>Implemented POST /predict-churn endpoint.</td>
+
+</tr>
+
+<tr>
+
+<td>Invalid input handling</td>
+
+<td>FastAPI validation returns HTTP 422 with detailed messages.</td>
+
+</tr>
+
+<tr>
+
+<td>API verification</td>
+
+<td>All endpoints tested successfully using Requests library.</td>
+
+</tr>
+
+</table>
+
+<h2>Final Status</h2>
+
+<p>
+
+No unresolved issues remain after testing.
+
+The API is stable and ready for integration with the Streamlit dashboard.
+
+</p>
+
+</body>
+
+</html>
