@@ -258,7 +258,7 @@ The completed project will enable businesses to
 
 This project is being developed collaboratively by the NeuralRetail project team.
 
-Each member is responsible for a dedicated module including Integration, Data Engineering, Data Validation, Exploratory Data Analysis, Feature Engineering, and Machine Learning.
+Each member is responsible for a dedicated module including Integration, Data Engineering, Data Validation, Exploratory Data Analysis, Feature Engineering, and Machine Learning (Lingampalli Nishanth).
 
 ---
 
